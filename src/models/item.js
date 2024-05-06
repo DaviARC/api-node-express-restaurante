@@ -10,3 +10,5 @@ class Item{
         this.des_item = des_item;
     }
 }
+
+export default Item
