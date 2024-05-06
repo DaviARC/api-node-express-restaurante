@@ -21,7 +21,7 @@ ALTER TABLE res_item ADD CONSTRAINT pk_res_item PRIMARY KEY ( cd_item );
 CREATE TABLE res_restaurante (
     cd_restaurante   VARCHAR(50) NOT NULL,
     nom_restaurante  VARCHAR(60) NOT NULL,
-    cpnj_restaurante NUMERIC(14) NOT NULL,
+    cnpj_restaurante NUMERIC(14) NOT NULL,
     img_restaurante  BYTEA
 );
 
