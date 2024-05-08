@@ -1,5 +1,5 @@
 import client from "../config/dbConnect.js";
-import Categoria from "../models/categoria.js"
+import Categoria from "../models/Categoria.js"
 
 export default class CategoriaController{
     static criarCategoria = async(req, res, next)=>{

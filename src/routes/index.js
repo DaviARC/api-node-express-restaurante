@@ -1,6 +1,9 @@
 import express from 'express';
+import item from './itemRoutes.js';
 import restaurante from './restauranteRoutes.js';
 import categoria from './categoriaRoutes.js'
+import cliente from './clienteRoutes.js'
+
 
 const routes = (app) =>{
     app.route("/").get((req, res)=>{
@@ -10,7 +13,9 @@ const routes = (app) =>{
     app.use(
         express.json(),
         restaurante,
-        categoria
+        categoria,
+        item,
+        cliente
     )
 }
 

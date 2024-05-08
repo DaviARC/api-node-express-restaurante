@@ -12,7 +12,7 @@ CREATE TABLE res_item (
     cd_categoria   VARCHAR(60) NOT NULL,
     nm_item        VARCHAR(60) NOT NULL,
     pre_item       NUMERIC(6, 2) NOT NULL,
-    des_item       VARCHAR(60) NOT NULL,
+    des_item       VARCHAR(255) NOT NULL,
     img_item       BYTEA
 );
 
@@ -30,7 +30,6 @@ ALTER TABLE res_restaurante ADD CONSTRAINT pk_res_restaurante PRIMARY KEY ( cd_r
 CREATE TABLE res_cliente (
     cd_cliente  VARCHAR(60) NOT NULL,
     nm_cliente  VARCHAR(60) NOT NULL,
-    des_cliente VARCHAR(250) NOT NULL,
     log_cliente VARCHAR(60) NOT NULL UNIQUE,
     sen_cliente VARCHAR(60) NOT NULL 
 );

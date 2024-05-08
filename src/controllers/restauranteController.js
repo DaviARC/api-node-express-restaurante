@@ -1,5 +1,5 @@
 import client from "../config/dbConnect.js"
-import Restaurante from "../models/restaurante.js"
+import Restaurante from "../models/Restaurante.js"
 
 
 export default class restauranteController{
@@ -41,7 +41,8 @@ export default class restauranteController{
         try{
             const id = req.params.id;
 
-            client.query("DELETE FROM res_restaurante WHERE cd_restaurante = $1", [id]);
+            await client.query("DELETE FROM res_item WHERE cd_restaurante = $1", [id]);
+            await client.query("DELETE FROM res_restaurante WHERE cd_restaurante = $1", [id]);
 
             res.status(200).send({
                 message: "Restaurante deletado com sucesso"
