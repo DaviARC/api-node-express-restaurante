@@ -46,10 +46,10 @@ ALTER TABLE res_item_menu ADD CONSTRAINT pk_res_item_menu PRIMARY KEY ( cd_item 
 CREATE TABLE res_item_pedido (
     cd_pedido       VARCHAR(60) NOT NULL,
     cd_item         VARCHAR(60) NOT NULL,
-    qua_item_pedido NUMERIC(3) NOT NULL
+    qua_item_pedido NUMERIC(3) NOT NULL DEFAULT 0
 );
 
-ALTER TABLE res_item_pedido ADD CONSTRAINT pk_res_item_pedido PRIMARY KEY ( cd_pedido );
+ALTER TABLE res_item_pedido ADD CONSTRAINT pk_res_item_pedido PRIMARY KEY ( cd_item );
 
 CREATE TABLE res_menu (
     cd_menu  VARCHAR(60) NOT NULL,

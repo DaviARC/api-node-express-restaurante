@@ -3,6 +3,8 @@ import item from './itemRoutes.js';
 import restaurante from './restauranteRoutes.js';
 import categoria from './categoriaRoutes.js'
 import cliente from './clienteRoutes.js'
+import pedido from './pedidoRoutes.js';
+import itemPedido from './itemPedidoRoutes.js'
 
 
 const routes = (app) =>{
@@ -15,7 +17,9 @@ const routes = (app) =>{
         restaurante,
         categoria,
         item,
-        cliente
+        cliente,
+        pedido,
+        itemPedido
     )
 }
 
