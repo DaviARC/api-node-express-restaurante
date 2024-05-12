@@ -5,6 +5,7 @@ import categoria from './categoriaRoutes.js'
 import cliente from './clienteRoutes.js'
 import pedido from './pedidoRoutes.js';
 import itemPedido from './itemPedidoRoutes.js'
+import login from './loginRoutes.js'
 
 
 const routes = (app) =>{
@@ -19,7 +20,8 @@ const routes = (app) =>{
         item,
         cliente,
         pedido,
-        itemPedido
+        itemPedido,
+        login
     )
 }
 

@@ -1,4 +1,6 @@
 import client from "../config/dbConnect.js";
+import NaoEncontrado from "../erros/NaoEncontrado.js";
+import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import Categoria from "../models/Categoria.js"
 
 export default class CategoriaController{
@@ -18,7 +20,11 @@ export default class CategoriaController{
         try{
            const response = await client.query("SELECT * FROM res_categoria");
 
-           res.status(200).send(response.rows)
+           if(response.rowCount !== 0){
+            res.status(200).send(response.rows)
+           } else {
+            next(new NaoEncontrado("Não existem categorias."))
+           }
         }
         catch(e){
             console.log(e);
@@ -30,7 +36,11 @@ export default class CategoriaController{
 
             const response = await client.query("SELECT * FROM res_categoria WHERE cd_categoria = $1", [id]);
 
-            res.status(200).send(response.rows);
+            if(response.rowCount !== 0){
+                res.status(200).send(response.rows)
+               } else {
+                next(new NaoEncontrado("O id da categoria não localizado."))
+               }
         }   
         catch(e){
             console.log(e);
@@ -42,9 +52,13 @@ export default class CategoriaController{
 
             client.query("DELETE FROM res_categoria WHERE cd_categoria = $1", [id]);
 
-            res.status(200).send({
-                message: "categoria deletada com sucesso"
-            })
+            if(response.rowCount !== 0){
+                res.status(200).send({
+                    message: "categoria deletada com sucesso"
+                })
+               } else {
+                next(new NaoEncontrado("O id da categoria não localizado."))
+               }
         }
         catch(e){
             console.log(e);
@@ -70,6 +84,9 @@ export default class CategoriaController{
             })
         }
         catch(e){
+            if(e.code = '42703'){
+                next(new RequisicaoIncorreta());
+            }
             console.log(e);
         }
     }

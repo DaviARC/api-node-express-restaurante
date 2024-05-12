@@ -1,4 +1,6 @@
 import client from "../config/dbConnect.js"
+import NaoEncontrado from "../erros/NaoEncontrado.js";
+import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import Restaurante from "../models/Restaurante.js"
 
 
@@ -31,7 +33,12 @@ export default class restauranteController{
 
             const response = await client.query("SELECT * FROM res_restaurante WHERE cd_restaurante = $1", [id]);
 
-            res.status(200).send(response.rows);
+            if(response.rowCount !== 0){
+                res.status(200).send(response.rows);
+            }else
+            {
+                next(new NaoEncontrado("O id do restaurante não localizado."))
+            }
         }   
         catch(e){
             console.log(e);
@@ -42,11 +49,16 @@ export default class restauranteController{
             const id = req.params.id;
 
             await client.query("DELETE FROM res_item WHERE cd_restaurante = $1", [id]);
-            await client.query("DELETE FROM res_restaurante WHERE cd_restaurante = $1", [id]);
+            const response = await client.query("DELETE FROM res_restaurante WHERE cd_restaurante = $1", [id]);
 
-            res.status(200).send({
-                message: "Restaurante deletado com sucesso"
-            })
+            if(response.rowCount !== 0){
+                res.status(200).send({
+                    message: "Restaurante deletado com sucesso"
+                })
+            }else
+            {
+                next(new NaoEncontrado("O id do restaurante não localizado."))
+            }
         }
         catch(e){
             console.log(e);
@@ -72,6 +84,9 @@ export default class restauranteController{
             })
         }
         catch(e){
+            if(e.code = '42703'){
+                next(new RequisicaoIncorreta());
+            }
             console.log(e);
         }
     }

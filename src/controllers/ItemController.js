@@ -1,4 +1,6 @@
 import client from "../config/dbConnect.js";
+import NaoEncontrado from "../erros/NaoEncontrado.js";
+import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import Item from "../models/Item.js"
 
 export default class ItemController{
@@ -30,7 +32,12 @@ export default class ItemController{
 
             const response = await client.query("SELECT * FROM res_item WHERE cd_item = $1", [id]);
 
-            res.status(200).send(response.rows);
+            if(response.rowCount !== 0){
+                res.status(200).send(response.rows);
+            }else
+            {
+                next(new NaoEncontrado("O id do item não localizado."))
+            }
         }   
         catch(e){
             console.log(e);
@@ -40,11 +47,16 @@ export default class ItemController{
         try{
             const id = req.params.id;
 
-            client.query("DELETE FROM res_item WHERE cd_item = $1", [id]);
+            const response = await client.query("DELETE FROM res_item WHERE cd_item = $1", [id]);
 
-            res.status(200).send({
-                message: "item deletado com sucesso"
-            })
+            if(response.rowCount !== 0){
+                res.status(200).send({
+                    message: "Item deletado com sucesso"
+                })
+            }else
+            {
+                next(new NaoEncontrado("O id do item não localizado."))
+            }
         }
         catch(e){
             console.log(e);
@@ -70,6 +82,9 @@ export default class ItemController{
             })
         }
         catch(e){
+            if(e.code = '42703'){
+                next(new RequisicaoIncorreta());
+            }
             console.log(e);
         }
     }

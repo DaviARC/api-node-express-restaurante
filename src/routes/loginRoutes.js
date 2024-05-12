@@ -17,3 +17,5 @@ router.post("/login", async(req,res)=>{
     }
     res.status(401).send({message: "Usuário não autorizado"}).end();        
 })
+
+export default router

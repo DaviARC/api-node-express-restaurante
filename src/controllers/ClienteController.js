@@ -1,4 +1,6 @@
 import client from "../config/dbConnect.js";
+import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
+import NaoEncontrado from "../erros/NaoEncontrado.js";
 import Cliente from "../models/Cliente.js"
 
 export default class ClienteController{
@@ -11,7 +13,7 @@ export default class ClienteController{
             res.status(200).send({message: "Cliente cadastrado"});
         }
         catch(e){
-            console.log(e);
+            next(e);
         }
     }
     static listarClientes = async(req, res, next)=>{
@@ -21,7 +23,7 @@ export default class ClienteController{
            res.status(200).send(response.rows)
         }
         catch(e){
-            console.log(e);
+            next(e);
         }
     }
     static listarClientePorId = async(req, res, next)=>{
@@ -30,21 +32,34 @@ export default class ClienteController{
 
             const response = await client.query("SELECT * FROM res_cliente WHERE cd_cliente = $1", [id]);
 
-            res.status(200).send(response.rows);
+            if(response.rowCount !== 0){
+                res.status(200).send(response.rows);
+            }else
+            {
+                next(new NaoEncontrado("O id do cliente não localizado."))
+            }
         }   
         catch(e){
-            console.log(e);
+            next(e);
         }       
     }
     static apagarCliente = async(req, res, next)=>{
         try{
             const id = req.params.id;
+            const response = await client.query("DELETE FROM res_cliente WHERE cd_cliente = $1", [id]);
+            
+            console.log(response);
 
-            client.query("DELETE FROM res_cliente WHERE cd_cliente = $1", [id]);
 
-            res.status(200).send({
-                message: "Cliente deletado com sucesso"
-            })
+            if(response.rowCount !== 0){
+                res.status(200).send({
+                    message: "Cliente deletado com sucesso"
+                })
+            }else
+            {
+                next(new NaoEncontrado("O id do cliente não localizado."))
+            }
+            
         }
         catch(e){
             console.log(e);
@@ -70,6 +85,9 @@ export default class ClienteController{
             })
         }
         catch(e){
+            if(e.code = '42703'){
+                next(new RequisicaoIncorreta());
+            }
             console.log(e);
         }
     }
