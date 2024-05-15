@@ -2,6 +2,7 @@ import client from "../config/dbConnect.js"
 import NaoEncontrado from "../erros/NaoEncontrado.js";
 import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import Restaurante from "../models/Restaurante.js"
+import fs from 'fs';
 
 
 export default class restauranteController{
@@ -19,7 +20,7 @@ export default class restauranteController{
     }
     static listarRestaurantes = async(req, res, next)=>{
         try{
-            const response = await client.query("SELECT * FROM res_restaurante");
+            const response = await client.query("SELECT cd_restaurante, nm_restaurante, cnpj_restaurante FROM res_restaurante");
 
             res.status(200).send(response.rows);
         }   
@@ -31,7 +32,7 @@ export default class restauranteController{
         try{
             const id = req.params.id;
 
-            const response = await client.query("SELECT * FROM res_restaurante WHERE cd_restaurante = $1", [id]);
+            const response = await client.query("SELECT cd_restaurante, nm_restaurante, cnpj_restaurante FROM res_restaurante WHERE cd_restaurante = $1", [id]);
 
             if(response.rowCount !== 0){
                 res.status(200).send(response.rows);
@@ -71,6 +72,13 @@ export default class restauranteController{
             let query = "UPDATE res_restaurante SET "
             valores.push(req.params.id)
             
+            if(req.caminho !== undefined && req.path !== undefined){
+                const imageBuffer = fs.readFileSync(`${req.caminho}\\${req.nomeImagem}`);
+                const base64Image = Buffer.from(imageBuffer).toString('base64');
+                atributosObj.push('img_restaurante');
+                valores.push(base64Image);   
+            }
+
             atributosObj.forEach((atributo, i) => {
                 atributosObj.length - 1 === i ? query += `${atributo} = $${i + 1}` : query += `${atributo} = $${i + 1}, `
             })
@@ -84,10 +92,10 @@ export default class restauranteController{
             })
         }
         catch(e){
+            console.log(e);
             if(e.code = '42703'){
                 next(new RequisicaoIncorreta());
             }
-            console.log(e);
         }
     }
 }
