@@ -49,7 +49,7 @@ CREATE TABLE res_item_pedido (
     qua_item_pedido NUMERIC(3) NOT NULL DEFAULT 0
 );
 
-ALTER TABLE res_item_pedido ADD CONSTRAINT pk_res_item_pedido PRIMARY KEY ( cd_item );
+ALTER TABLE res_item_pedido ADD CONSTRAINT pk_res_item_pedido PRIMARY KEY ( cd_item, cd_pedido );
 
 CREATE TABLE res_menu (
     cd_menu  VARCHAR(60) NOT NULL,
@@ -61,7 +61,9 @@ ALTER TABLE res_menu ADD CONSTRAINT pk_res_menu PRIMARY KEY ( cd_menu );
 CREATE TABLE res_pedido (
     cd_pedido  VARCHAR(60) NOT NULL,
     cd_cliente VARCHAR(60) NOT NULL,
-    vl_total   NUMERIC(4, 2)
+    vl_total   NUMERIC(4, 2),
+    dt_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    dt_conclusao TIMESTAMP NULL
 );
 
 ALTER TABLE res_pedido ADD CONSTRAINT pk_res_pedido PRIMARY KEY ( cd_pedido );

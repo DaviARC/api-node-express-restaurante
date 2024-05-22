@@ -2,6 +2,7 @@ import client from "../config/dbConnect.js";
 import NaoEncontrado from "../erros/NaoEncontrado.js";
 import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import Item from "../models/Item.js"
+import fs from 'fs';
 
 export default class ItemController{
     static criarItem = async(req, res, next)=>{
@@ -67,14 +68,14 @@ export default class ItemController{
             const atributosObj = Object.keys(req.body);
             const valores = Object.values(req.body);
             let query = "UPDATE res_item SET "
-            valores.push(req.params.id)
-
             if(req.caminho !== undefined && req.path !== undefined){
                 const imageBuffer = fs.readFileSync(`${req.caminho}\\${req.nomeImagem}`);
                 const base64Image = Buffer.from(imageBuffer).toString('base64');
-                atributosObj.push('img_restaurante');
+                atributosObj.push('img_item');
                 valores.push(base64Image);   
             }
+
+            valores.push(req.params.id)
             
             atributosObj.forEach((atributo, i) => {
                 atributosObj.length - 1 === i ? query += `${atributo} = $${i + 1}` : query += `${atributo} = $${i + 1}, `
