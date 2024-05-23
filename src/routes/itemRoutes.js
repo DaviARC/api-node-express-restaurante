@@ -6,9 +6,9 @@ const router = express.Router();
 
 router
 .get('/itens', ItemController.listarItens)
-.get('/item/:id', ItemController.listarItemPorId)
-.post('/item', ItemController.criarItem)
-.put('/item/:id', upload, ItemController.atualizarItem)
-.delete('/item/:id', ItemController.apagarItem)
+.get('/itens/:id', ItemController.listarItemPorId)
+.post('/itens', ItemController.criarItem)
+.put('/itens/:id', upload, ItemController.atualizarItem)
+.delete('/itens/:id', ItemController.apagarItem)
 
 export default router;
