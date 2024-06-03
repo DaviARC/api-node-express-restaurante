@@ -6,9 +6,9 @@ const router = express.Router();
 
 router
 .get('/restaurantes', restauranteController.listarRestaurantes)
-.get('/restaurante/:id', restauranteController.listarRestaurantePorId)
-.post('/restaurante', restauranteController.criarRestaurante)
-.put('/restaurante/:id', upload, restauranteController.atualizarRestaurante)
-.delete('/restaurante:id', restauranteController.apagarRestaurante)
+.get('/restaurantes/:id', restauranteController.listarRestaurantePorId)
+.post('/restaurantes', restauranteController.criarRestaurante)
+.put('/restaurantes/:id', upload, restauranteController.atualizarRestaurante)
+.delete('/restaurantes:id', restauranteController.apagarRestaurante)
 
 export default router;
