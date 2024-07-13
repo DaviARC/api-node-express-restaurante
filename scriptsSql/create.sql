@@ -95,3 +95,52 @@ ALTER TABLE res_item_menu
 ALTER TABLE res_pedido
     ADD CONSTRAINT fk_res_pedido_cliente FOREIGN KEY ( cd_cliente )
         REFERENCES res_cliente ( cd_cliente );
+
+CREATE TABLE avaliar_item (
+    cd_item    VARCHAR(60) NOT NULL,
+    cd_cliente VARCHAR(60) NOT NULL,
+    nt_item    NUMERIC(1)
+);
+
+ALTER TABLE avaliar_item ADD CONSTRAINT avaliar_item_pk PRIMARY KEY ( cd_item,
+                                                                      cd_cliente );
+
+CREATE TABLE avaliar_restaurante (
+    cd_restaurante VARCHAR(60) NOT NULL,
+    cd_cliente     VARCHAR(60) NOT NULL,
+    nt_restaurante NUMERIC(1)
+);
+
+ALTER TABLE avaliar_restaurante ADD CONSTRAINT avaliar_restaurante_pk PRIMARY KEY ( cd_restaurante,
+                                                                                    cd_cliente );
+
+CREATE TABLE favoritar_restaurante (
+    cd_cliente     VARCHAR(60) NOT NULL,
+    cd_restaurante VARCHAR(60) NOT NULL
+);
+
+ALTER TABLE favoritar_restaurante ADD CONSTRAINT favoritar_restaurante_pk PRIMARY KEY ( cd_restaurante,
+                                                                                        cd_cliente );
+ALTER TABLE avaliar_item
+    ADD CONSTRAINT fk_cliente_avaliar_item FOREIGN KEY ( cd_cliente )
+        REFERENCES res_cliente ( cd_cliente );
+
+ALTER TABLE avaliar_restaurante
+    ADD CONSTRAINT fk_cliente_avaliar_res FOREIGN KEY ( cd_cliente )
+        REFERENCES res_cliente ( cd_cliente );
+ 
+ALTER TABLE favoritar_restaurante
+    ADD CONSTRAINT fk_cliente_favoritar_res FOREIGN KEY ( cd_cliente )
+        REFERENCES res_cliente ( cd_cliente );
+
+ALTER TABLE avaliar_item
+    ADD CONSTRAINT fk_item_avaliar_item FOREIGN KEY ( cd_item )
+        REFERENCES res_item ( cd_item );
+
+ALTER TABLE avaliar_restaurante
+    ADD CONSTRAINT fk_res_avaliar_res FOREIGN KEY ( cd_restaurante )
+        REFERENCES res_restaurante ( cd_restaurante );
+
+ALTER TABLE favoritar_restaurante
+    ADD CONSTRAINT fk_rese_favoritar_res FOREIGN KEY ( cd_restaurante )
+        REFERENCES res_restaurante ( cd_restaurante );

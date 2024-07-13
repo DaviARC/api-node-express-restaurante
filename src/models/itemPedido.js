@@ -1,4 +1,3 @@
-import {v4 as uuidv4} from 'uuid'
 
 export default class ItemPedido{
     constructor({cd_pedido, cd_item, qua_item_pedido}){

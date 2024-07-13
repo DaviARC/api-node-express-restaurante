@@ -8,7 +8,10 @@ export default class CategoriaController{
         try{
             const categoria = new Categoria(req.body);
 
-            const response = await client.query("INSERT INTO res_categoria(cd_categoria, nm_categoria, des_categoria) VALUES ($1,$2,$3)", [categoria.cd_categoria, categoria.nm_categoria, categoria.des_categoria]);
+            const response = await client.query(`
+                INSERT INTO res_categoria(cd_categoria, nm_categoria, des_categoria)
+                VALUES ($1,$2,$3)`
+                , [categoria.cd_categoria, categoria.nm_categoria, categoria.des_categoria]);
 
             res.status(200).send({message: "Restaurante cadastrado"});
         }

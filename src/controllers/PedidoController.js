@@ -7,7 +7,7 @@ export default class ItemController{
     static criarPedido = async(req, res, next)=>{
         try{
             const pedido = new Pedido({cd_cliente: req.userId});
-            console.log(pedido.cd_pedido, pedido.cd_cliente, pedido.vl_total, req.userId);
+            
              await client.query("INSERT INTO res_pedido(cd_pedido, cd_cliente, vl_total) VALUES ($1,$2, $3)", [pedido.cd_pedido, pedido.cd_cliente, pedido.vl_total]);
 
             res.status(200).send({message: "Pedido cadastrado"});

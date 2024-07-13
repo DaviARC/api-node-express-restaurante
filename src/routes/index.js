@@ -5,6 +5,7 @@ import categoria from './categoriaRoutes.js'
 import cliente from './clienteRoutes.js'
 import pedido from './pedidoRoutes.js';
 import login from './loginRoutes.js'
+import feedback from './clienteFeedbackRoutes.js'
 
 
 const routes = (app) =>{
@@ -17,9 +18,11 @@ const routes = (app) =>{
         restaurante,
         categoria,
         item,
+        feedback,
         cliente,
         pedido,
-        login
+        login,
+        
     )
 }
 

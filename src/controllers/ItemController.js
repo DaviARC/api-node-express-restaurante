@@ -19,12 +19,32 @@ export default class ItemController{
     }
     static listarItens = async(req, res, next)=>{
         try{
-           const response = await client.query("SELECT * FROM res_item");
+           const response = await client.query("SELECT cd_item, cd_categoria, cd_restaurante, nm_item, pre_item, des_item FROM res_item");
 
            res.status(200).send(response.rows)
         }
         catch(e){
             console.log(e);
+        }
+    }
+    static listarNomeItemNomeRestaurantePorId = async(req, res, next) =>{
+        try {
+            
+            const id = req.params.id;
+
+            const response = await client.query("SELECT res_item.nm_item, res_restaurante.nm_restaurante FROM res_item INNER JOIN res_restaurante ON res_item.cd_restaurante = res_restaurante.cd_restaurante", [id]);
+
+            if(response.rowCount !== 0){
+                req.nomeItem = response.rows.nm_item;
+                req.nomeRestaurante = response.rows.nm_restaurante
+
+            }else
+            {
+                next(new NaoEncontrado("O id do item não localizado."))
+            }
+
+        } catch (e) {
+            
         }
     }
     static listarItemPorId = async(req, res, next)=>{
@@ -93,7 +113,7 @@ export default class ItemController{
             if(e.code = '42703'){
                 next(new RequisicaoIncorreta());
             }
-            console.log(e);
+            next(e)
         }
     }
 }
