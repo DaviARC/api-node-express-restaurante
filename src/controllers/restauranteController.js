@@ -10,7 +10,7 @@ export default class restauranteController{
         try{
             const restaurante = new Restaurante(req.body);
 
-            await client.query("INSERT INTO res_restaurante(cd_restaurante, nm_restaurante, cnpj_restaurante) VALUES ($1,$2,$3)", [restaurante.cd_restaurante, restaurante.nom_restaurante, restaurante.cnpj_restaurante]);
+            await client.query("INSERT INTO res_restaurante(cd_restaurante, nm_restaurante, cnpj_restaurante, sob_restaurante) VALUES ($1,$2,$3,$4)", [restaurante.cd_restaurante, restaurante.nom_restaurante, restaurante.cnpj_restaurante, restaurante.sob_restaurante]);
 
             res.status(200).send({message: "Restaurante cadastrado"});
         }
@@ -70,7 +70,6 @@ export default class restauranteController{
             const atributosObj = Object.keys(req.body);
             const valores = Object.values(req.body);
             let query = "UPDATE res_restaurante SET "
-            valores.push(req.params.id)
             
             if(req.caminho !== undefined && req.path !== undefined){
                 const imageBuffer = fs.readFileSync(`${req.caminho}\\${req.nomeImagem}`);
@@ -78,6 +77,7 @@ export default class restauranteController{
                 atributosObj.push('img_restaurante');
                 valores.push(base64Image);   
             }
+            valores.push(req.params.id)
 
             atributosObj.forEach((atributo, i) => {
                 atributosObj.length - 1 === i ? query += `${atributo} = $${i + 1}` : query += `${atributo} = $${i + 1}, `

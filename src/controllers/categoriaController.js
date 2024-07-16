@@ -13,7 +13,7 @@ export default class CategoriaController{
                 VALUES ($1,$2,$3)`
                 , [categoria.cd_categoria, categoria.nm_categoria, categoria.des_categoria]);
 
-            res.status(200).send({message: "Restaurante cadastrado"});
+            res.status(200).send({message: "Categoria cadastrado"});
         }
         catch(e){
             console.log(e);
@@ -35,6 +35,7 @@ export default class CategoriaController{
     }
     static listarCategoriaPorId = async(req, res, next)=>{
         try{
+            console.log(req.route.path);
             const id = req.params.id;
 
             const response = await client.query("SELECT * FROM res_categoria WHERE cd_categoria = $1", [id]);

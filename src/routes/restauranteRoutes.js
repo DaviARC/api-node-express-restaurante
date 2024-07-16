@@ -9,6 +9,6 @@ router
 .get('/restaurantes/:id', restauranteController.listarRestaurantePorId)
 .post('/restaurantes', restauranteController.criarRestaurante)
 .put('/restaurantes/:id', upload, restauranteController.atualizarRestaurante)
-.delete('/restaurantes:id', restauranteController.apagarRestaurante)
+.delete('/restaurantes/:id', restauranteController.apagarRestaurante)
 
 export default router;

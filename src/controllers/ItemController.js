@@ -19,7 +19,13 @@ export default class ItemController{
     }
     static listarItens = async(req, res, next)=>{
         try{
-           const response = await client.query("SELECT cd_item, cd_categoria, cd_restaurante, nm_item, pre_item, des_item FROM res_item");
+           const response = await client.query(`
+                SELECT res_restaurante.nm_restaurante, res_categoria.nm_categoria, res_item.nm_item, res_item.pre_item, res_item.des_item, res_item.img_item
+                FROM res_item
+                INNER JOIN res_restaurante
+                ON res_item.cd_restaurante = res_restaurante.cd_restaurante
+                INNER JOIN res_categoria
+                ON res_categoria.cd_categoria= res_item.cd_categoria`);
 
            res.status(200).send(response.rows)
         }
@@ -51,7 +57,7 @@ export default class ItemController{
         try{
             const id = req.params.id;
 
-            const response = await client.query("SELECT * FROM res_item WHERE cd_item = $1", [id]);
+            const response = await client.query("SELECT cd_item, cd_categoria, cd_restaurante, nm_item, pre_item, des_item FROM res_item WHERE cd_item = $1", [id]);
 
             if(response.rowCount !== 0){
                 res.status(200).send(response.rows);

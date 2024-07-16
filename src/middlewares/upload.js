@@ -11,11 +11,23 @@ export const storage = multer.diskStorage({
     filename: async (req,file,callback) => {
         const id = req.params.id;
 
-        const response = await client.query("SELECT res_item.nm_item, res_restaurante.nm_restaurante FROM res_item INNER JOIN res_restaurante ON res_item.cd_restaurante = res_restaurante.cd_restaurante WHERE res_item.cd_item = $1", [id]);
+        if(req.route.path == '/itens/:id'){
+            const response = await client.query("SELECT res_item.nm_item, res_restaurante.nm_restaurante FROM res_item INNER JOIN res_restaurante ON res_item.cd_restaurante = res_restaurante.cd_restaurante WHERE res_item.cd_item = $1", [id]);
 
-        const [nomeItem, nomeRestaurante] = response.rows[0]
+            const { nm_item, nm_restaurante } = response.rows[0]
+            
+            req.nomeImagem =  `${nm_item}_${nm_restaurante}.png`
+        } 
+        else if(req.route.path == '/restaurantes/:id'){
+            const response = await client.query(`
+                SELECT nm_restaurante
+                FROM res_restaurante
+                WHERE cd_restaurante = $1`, [id]);
 
-        req.nomeImagem =  `${nomeItem}_${nomeRestaurante}.png`
+            const { nm_restaurante } = response.rows[0]
+
+            req.nomeImagem =  `${nm_restaurante}.png`
+        }
 
         callback(null, req.nomeImagem);
     }
